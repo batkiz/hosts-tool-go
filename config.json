@@ -1,0 +1,12 @@
+[
+  {
+    "Name": "google",
+    "Url": "https://github.com/googlehosts/hosts/raw/master/hosts-files/hosts",
+    "Enabled": true
+  },
+  {
+    "Name": "neo",
+    "Url": "https://hosts.nfz.moe/full/hosts",
+    "Enabled": true
+  }
+]
