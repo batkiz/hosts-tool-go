@@ -73,3 +73,14 @@ func update() {
 	fmt.Println(Green("updated successfully"))
 	flushDNS()
 }
+
+func openHosts(name string) {
+	h := getHostsItems()
+	for _, item := range h {
+		if item.Name == name {
+			openURL(item.Url)
+			return
+		}
+	}
+	fmt.Println(name + " source not found")
+}
