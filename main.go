@@ -79,10 +79,10 @@ func main() {
 		},
 		{
 			Name: "home",
-			Usage: "`home URL` to open a hosts's source using browser",
+			Usage: "`home NAME` to open a hosts's source using browser",
 			Action: func(c *cli.Context) error {
 				if c.Args().First() == "" {
-					fmt.Println("use `home URL` to open a hosts's source using browser")
+					fmt.Println("use `home NAME` to open a hosts's source using browser")
 				} else {
 					openHosts(c.Args().First())
 				}
