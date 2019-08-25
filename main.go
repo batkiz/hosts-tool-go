@@ -77,10 +77,28 @@ func main() {
 				return nil
 			},
 		},
+		{
+			Name: "home",
+			Usage: "`home URL` to open a hosts's source using browser",
+			Action: func(c *cli.Context) error {
+				if c.Args().First() == "" {
+					fmt.Println("use `home URL` to open a hosts's source using browser")
+				} else {
+					openHosts(c.Args().First())
+				}
+				return nil
+			},
+		},
 	}
-
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+	if len(os.Args) > 1 {
+		err := app.Run(os.Args)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		err := interact(app, os.Args[0])
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }

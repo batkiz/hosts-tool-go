@@ -53,3 +53,25 @@ func flushDNS() {
 		fmt.Println("not supported now, please flush DNS yourself")
 	}
 }
+
+func openURL(url string) {
+	switch runtime.GOOS {
+	case "windows":
+		cmd := exec.Command("cmd", "/c start " + url)
+		output, err := cmd.Output()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(string(output))
+	case "linux":
+		cmd := exec.Command("x-www-browser", url)
+		output, err := cmd.Output()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(string(output))
+	default:
+		fmt.Println("not supported now, please copy the url and open it in browser yourselr")
+	}
+}
+
