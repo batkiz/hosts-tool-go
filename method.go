@@ -20,7 +20,7 @@ func getHosts(url string) string {
 	return string(resp.Text)
 }
 
-func PathExist(_path string) bool {
+func isPathExist(_path string) bool {
 	_, err := os.Stat(_path)
 	if err != nil && os.IsNotExist(err) {
 		return false
@@ -29,7 +29,7 @@ func PathExist(_path string) bool {
 }
 
 func backupHosts() {
-	if PathExist(hostsPath) {
+	if isPathExist(hostsPath) {
 		backupedName := getHostsPath() + time.Now().Format("2006-01-02-15-04-05")
 
 		err := os.Rename(hostsPath, backupedName+".bak")
@@ -82,5 +82,5 @@ func openHosts(name string) {
 			return
 		}
 	}
-	fmt.Println(name + " source not found")
+	fmt.Println(name + " not found")
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -34,44 +35,36 @@ func getConfigFilePath() string {
 }
 
 func flushDNS() {
+	var err error
+	var output []byte
 	switch runtime.GOOS {
 	case "windows":
-		cmd := exec.Command("ipconfig", "/flushdns")
-		output, err := cmd.Output()
-		if err != nil {
-			panic(err)
-		}
+		output, err = exec.Command("ipconfig", "/flushdns").Output()
 		fmt.Println(string(output))
 	case "linux":
-		cmd := exec.Command("/etc/init.d/nscd", "restart")
-		output, err := cmd.Output()
-		if err != nil {
-			panic(err)
-		}
+		output, err = exec.Command("/etc/init.d/nscd", "restart").Output()
 		fmt.Println(string(output))
 	default:
 		fmt.Println("not supported now, please flush DNS yourself")
 	}
-}
-
-func openURL(url string) {
-	switch runtime.GOOS {
-	case "windows":
-		cmd := exec.Command("cmd", "/c start " + url)
-		output, err := cmd.Output()
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println(string(output))
-	case "linux":
-		cmd := exec.Command("x-www-browser", url)
-		output, err := cmd.Output()
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println(string(output))
-	default:
-		fmt.Println("not supported now, please copy the url and open it in browser yourselr")
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
+func openURL(url string) {
+	var err error
+	switch runtime.GOOS {
+	case "windows":
+		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+	case "linux":
+		err = exec.Command("xdg-open", url).Start()
+	case "darwin":
+		err = exec.Command("open", url).Start()
+	default:
+		fmt.Println("unsupported platform, please open it in browser yourself")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+}

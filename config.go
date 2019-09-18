@@ -19,12 +19,12 @@ func add(name, url string) {
 	}
 	_ = json.Unmarshal(content, &h)
 	h = append(h, item)
-	content_new, _ := json.Marshal(h)
+	newContent, _ := json.Marshal(h)
 
 	f, _ := os.OpenFile(configFilePath, os.O_WRONLY|os.O_TRUNC, 0666)
 	defer f.Close()
-	fmt.Println(string(content_new))
-	_, _ = f.WriteString(string(content_new))
+	fmt.Println(string(newContent))
+	_, _ = f.WriteString(string(newContent))
 
 	fmt.Println(name + " successfully added")
 }
@@ -37,10 +37,10 @@ func del(name string) {
 		}
 	}
 
-	content_new, _ := json.Marshal(h)
+	newContent, _ := json.Marshal(h)
 	f, _ := os.OpenFile(configFilePath, os.O_WRONLY|os.O_TRUNC, 0666)
 	defer f.Close()
-	_, _ = f.WriteString(string(content_new))
+	_, _ = f.WriteString(string(newContent))
 
 	fmt.Println(name + " successfully removed")
 }

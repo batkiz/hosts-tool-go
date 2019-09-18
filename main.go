@@ -12,7 +12,7 @@ import (
 var (
 	hostsPath      string = getHostsFilePath()
 	configFilePath string = getConfigFilePath()
-	Version        string = "0.0.1"
+	Version        string = "0.0.2"
 )
 
 func main() {
@@ -78,11 +78,11 @@ func main() {
 			},
 		},
 		{
-			Name: "home",
-			Usage: "`home NAME` to open a hosts's source using browser",
+			Name:  "home",
+			Usage: "`home NAME` to open a hosts' source using browser",
 			Action: func(c *cli.Context) error {
 				if c.Args().First() == "" {
-					fmt.Println("use `home NAME` to open a hosts's source using browser")
+					fmt.Println("use `home NAME` to open a hosts' source using browser")
 				} else {
 					openHosts(c.Args().First())
 				}
