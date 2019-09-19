@@ -11,6 +11,7 @@ type hostsItem struct {
 	Enabled bool
 }
 
+// getHostsItems 由配置文件获得所有配置，并返回为结构体数组
 func getHostsItems() []hostsItem {
 	var hostsItems []hostsItem
 	content, err := ioutil.ReadFile(configFilePath)

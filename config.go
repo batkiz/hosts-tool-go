@@ -1,3 +1,4 @@
+// 对 config.json 文件的操作
 package main
 
 import (
@@ -9,6 +10,7 @@ import (
 	"github.com/cheynewallace/tabby"
 )
 
+// add 添加源
 func add(name, url string) {
 	item := hostsItem{Name: name, Url: url, Enabled: true}
 
@@ -29,6 +31,7 @@ func add(name, url string) {
 	fmt.Println(name + " successfully added")
 }
 
+// del 删除源
 func del(name string) {
 	h := getHostsItems()
 	for i, _ := range h {
@@ -45,6 +48,7 @@ func del(name string) {
 	fmt.Println(name + " successfully removed")
 }
 
+// list 输出配置文件信息
 func list() {
 	h := getHostsItems()
 	t := tabby.New()

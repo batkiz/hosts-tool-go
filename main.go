@@ -96,7 +96,7 @@ func main() {
 			log.Fatal(err)
 		}
 	} else {
-		err := interact(app, os.Args[0])
+		err := repl(app, os.Args[0])
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -11,6 +11,7 @@ import (
 	. "github.com/logrusorgru/aurora"
 )
 
+// getHosts 从 url 下载 hosts 文件内容
 func getHosts(url string) string {
 	resp, err := nic.Get(url, nil)
 	if err != nil {
@@ -20,6 +21,7 @@ func getHosts(url string) string {
 	return string(resp.Text)
 }
 
+// isPathExist 检测路径是否存在
 func isPathExist(_path string) bool {
 	_, err := os.Stat(_path)
 	if err != nil && os.IsNotExist(err) {
@@ -28,6 +30,7 @@ func isPathExist(_path string) bool {
 	return true
 }
 
+// backupHosts 备份 hosts 文件
 func backupHosts() {
 	if isPathExist(hostsPath) {
 		backupedName := getHostsPath() + time.Now().Format("2006-01-02-15-04-05")
@@ -39,6 +42,7 @@ func backupHosts() {
 	}
 }
 
+// getHostsContent 从所有 enabled 的 hosts 源获取 hosts
 func getHostsContent(hosts []hostsItem) string {
 	content := ""
 	for i := range hosts {
@@ -53,16 +57,19 @@ func getHostsContent(hosts []hostsItem) string {
 	return content
 }
 
+// cleanBak 清除备份文件
 func cleanBak() {
 	files, err := filepath.Glob(`C:\Windows\System32\drivers\etc\*.bak`)
 	if err != nil {
 		panic(err)
 	}
 	for _, file := range files {
-		os.Remove(file)
+		_ = os.Remove(file)
 	}
+	fmt.Println("All bak file cleaned.")
 }
 
+// update 更新 hosts
 func update() {
 	backupHosts()
 	h := getHostsItems()
@@ -74,6 +81,7 @@ func update() {
 	flushDNS()
 }
 
+// openHosts 在浏览器中打开 hosts 源网址
 func openHosts(name string) {
 	h := getHostsItems()
 	for _, item := range h {

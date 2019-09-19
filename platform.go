@@ -9,6 +9,7 @@ import (
 	"runtime"
 )
 
+// getHostsFilePath 返回 hosts 文件路径（带 hosts）
 func getHostsFilePath() string {
 	if runtime.GOOS == "windows" {
 		return `C:\Windows\System32\drivers\etc\hosts`
@@ -17,6 +18,7 @@ func getHostsFilePath() string {
 	}
 }
 
+// getHostsPath 返回 hosts 文件路径（不带 hosts）
 func getHostsPath() string {
 	if runtime.GOOS == "windows" {
 		return `C:\Windows\System32\drivers\etc\`
@@ -25,6 +27,7 @@ func getHostsPath() string {
 	}
 }
 
+// getConfigFilePath 返回配置文件路径
 func getConfigFilePath() string {
 	execpath, err := os.Executable()
 	if err != nil {
@@ -34,6 +37,7 @@ func getConfigFilePath() string {
 	return configFilePath
 }
 
+// flushDNS 刷新 DNS 缓存
 func flushDNS() {
 	var err error
 	var output []byte
@@ -52,6 +56,7 @@ func flushDNS() {
 	}
 }
 
+// openURL 在浏览器中打开 url
 func openURL(url string) {
 	var err error
 	switch runtime.GOOS {
