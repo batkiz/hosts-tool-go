@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 
 	. "github.com/logrusorgru/aurora"
 	"github.com/urfave/cli"
@@ -14,6 +15,14 @@ var (
 	configFilePath string = getConfigFilePath()
 	Version        string = "0.0.2"
 )
+
+func init() {
+	if runtime.GOOS == "windows" || runtime.GOOS == "linux" {
+
+	} else {
+		log.Fatal("sorry, this is an unsupported platform.")
+	}
+}
 
 func main() {
 	app := cli.NewApp()

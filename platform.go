@@ -11,19 +11,27 @@ import (
 
 // getHostsFilePath 返回 hosts 文件路径（带 hosts）
 func getHostsFilePath() string {
-	if runtime.GOOS == "windows" {
+	switch runtime.GOOS {
+	case "windows":
 		return `C:\Windows\System32\drivers\etc\hosts`
-	} else {
+	case "linux":
 		return `/etc/hosts`
+	default:
+		log.Fatal("sorry, this is an unsupported platform.")
+		return ""
 	}
 }
 
 // getHostsPath 返回 hosts 文件路径（不带 hosts）
 func getHostsPath() string {
-	if runtime.GOOS == "windows" {
+	switch runtime.GOOS {
+	case "windows":
 		return `C:\Windows\System32\drivers\etc\`
-	} else {
+	case "linux":
 		return `/etc/`
+	default:
+		log.Fatal("sorry, this is an unsupported platform.")
+		return ""
 	}
 }
 
