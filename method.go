@@ -59,7 +59,7 @@ func getHostsContent(hosts []hostsItem) string {
 
 // cleanBak 清除备份文件
 func cleanBak() {
-	files, err := filepath.Glob(`C:\Windows\System32\drivers\etc\*.bak`)
+	files, err := filepath.Glob(getHostsPath() + `*.bak`)
 	if err != nil {
 		panic(err)
 	}
@@ -92,3 +92,28 @@ func openHosts(name string) {
 	}
 	fmt.Println(name + " not found")
 }
+
+// recoverLastBak 恢复最近的备份文件
+/*func recoverLastBak() {
+	files, err := filepath.Glob(`C:\Windows\System32\drivers\etc\*.bak`)
+	if err != nil {
+		panic(err)
+	}
+	if files == nil {
+		log.Fatal("sorry but there are no backup files.")
+	}
+	lastBak := ""
+	for _, b := range files {
+		if b >= lastBak {
+			lastBak = b
+		}
+	}
+
+	if isPathExist(getHostsFilePath()) {
+		err = os.Remove(getHostsFilePath())
+	}
+	err = os.Rename(lastBak, getHostsFilePath())
+	if err != nil {
+		log.Fatal("recover backup file failed")
+	}
+}*/
