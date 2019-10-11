@@ -37,12 +37,26 @@ func getHostsPath() string {
 
 // getConfigFilePath 返回配置文件路径
 func getConfigFilePath() string {
-	execpath, err := os.Executable()
+	execPath, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
-	configFilePath := filepath.Join(filepath.Dir(execpath), "./config.json")
+	configFilePath := filepath.Join(filepath.Dir(execPath), "./config.json")
 	return configFilePath
+}
+
+// getLocalHostsPath 返回本地 hosts 文件的路径
+func getLocalHostsPath() string {
+	execPath, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	localHostsFilePath := filepath.Join(filepath.Dir(execPath), "./LOCAL.txt")
+	if !isPathExist(localHostsFilePath) {
+		f, _ := os.OpenFile(localHostsFilePath, os.O_CREATE, 0666)
+		defer f.Close()
+	}
+	return localHostsFilePath
 }
 
 // flushDNS 刷新 DNS 缓存

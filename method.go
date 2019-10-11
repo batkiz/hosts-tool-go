@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"time"
@@ -13,6 +14,14 @@ import (
 
 // getHosts 从 url 下载 hosts 文件内容
 func getHosts(url string) string {
+	if url == "LOCAL" {
+		content, err := ioutil.ReadFile(getLocalHostsPath())
+		if err != nil {
+			panic(err)
+		}
+		return string(content)
+	}
+
 	resp, err := nic.Get(url, nil)
 	if err != nil {
 		panic(err)
