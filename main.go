@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	hostsPath      string = getHostsFilePath()
+	hostsPath      string = getHostsPathWithHosts()
 	configFilePath string = getConfigFilePath()
-	Version        string = "0.0.2"
+	Version        string = "0.1.0"
 )
 
 func init() {

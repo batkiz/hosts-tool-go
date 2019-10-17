@@ -9,21 +9,8 @@ import (
 	"runtime"
 )
 
-// getHostsFilePath 返回 hosts 文件路径（带 hosts）
-func getHostsFilePath() string {
-	switch runtime.GOOS {
-	case "windows":
-		return `C:\Windows\System32\drivers\etc\hosts`
-	case "linux":
-		return `/etc/hosts`
-	default:
-		log.Fatal("sorry, this is an unsupported platform.")
-		return ""
-	}
-}
-
-// getHostsPath 返回 hosts 文件路径（不带 hosts）
-func getHostsPath() string {
+// getHostsPathWithoutHosts 返回 hosts 文件路径（不带 hosts）
+func getHostsPathWithoutHosts() string {
 	switch runtime.GOOS {
 	case "windows":
 		return `C:\Windows\System32\drivers\etc\`
@@ -33,6 +20,11 @@ func getHostsPath() string {
 		log.Fatal("sorry, this is an unsupported platform.")
 		return ""
 	}
+}
+
+// getHostsPathWithHosts 返回 hosts 文件路径（带 hosts）
+func getHostsPathWithHosts() string {
+	return getHostsPathWithoutHosts() + "hosts"
 }
 
 // getConfigFilePath 返回配置文件路径
@@ -53,7 +45,7 @@ func getLocalHostsPath() string {
 	}
 	localHostsFilePath := filepath.Join(filepath.Dir(execPath), "./LOCAL.txt")
 	if !isPathExist(localHostsFilePath) {
-		f, _ := os.OpenFile(localHostsFilePath, os.O_CREATE, 0666)
+		f, _ := os.OpenFile(localHostsFilePath, os.O_CREATE|os.O_RDONLY, 0666)
 		defer f.Close()
 	}
 	return localHostsFilePath
@@ -61,8 +53,10 @@ func getLocalHostsPath() string {
 
 // flushDNS 刷新 DNS 缓存
 func flushDNS() {
-	var err error
-	var output []byte
+	var (
+		err    error
+		output []byte
+	)
 	switch runtime.GOOS {
 	case "windows":
 		output, err = exec.Command("ipconfig", "/flushdns").Output()
@@ -86,10 +80,8 @@ func openURL(url string) {
 		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
 	case "linux":
 		err = exec.Command("xdg-open", url).Start()
-	case "darwin":
-		err = exec.Command("open", url).Start()
 	default:
-		fmt.Println("unsupported platform, please open it in browser yourself")
+		fmt.Println("unsupported platform, please open it manually\n" + url)
 	}
 	if err != nil {
 		log.Fatal(err)

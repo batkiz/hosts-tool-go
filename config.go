@@ -4,7 +4,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/cheynewallace/tabby"
@@ -14,12 +13,7 @@ import (
 func add(name, url string) {
 	item := hostsItem{Name: name, Url: url, Enabled: true}
 
-	var h []hostsItem
-	content, err := ioutil.ReadFile(configFilePath)
-	if err != nil {
-		panic(err)
-	}
-	_ = json.Unmarshal(content, &h)
+	h := getHostsItems()
 	h = append(h, item)
 	newContent, _ := json.Marshal(h)
 

@@ -42,7 +42,7 @@ func isPathExist(_path string) bool {
 // backupHosts 备份 hosts 文件
 func backupHosts() {
 	if isPathExist(hostsPath) {
-		backupedName := getHostsPath() + time.Now().Format("2006-01-02-15-04-05")
+		backupedName := getHostsPathWithoutHosts() + time.Now().Format("2006-01-02-15-04-05")
 
 		err := os.Rename(hostsPath, backupedName+".bak")
 		if err != nil {
@@ -68,14 +68,14 @@ func getHostsContent(hosts []hostsItem) string {
 
 // cleanBak 清除备份文件
 func cleanBak() {
-	files, err := filepath.Glob(getHostsPath() + `*.bak`)
+	files, err := filepath.Glob(getHostsPathWithoutHosts() + `*.bak`)
 	if err != nil {
 		panic(err)
 	}
 	for _, file := range files {
 		_ = os.Remove(file)
 	}
-	fmt.Println("All bak file cleaned.")
+	fmt.Println("All bak files cleaned.")
 }
 
 // update 更新 hosts
@@ -92,6 +92,11 @@ func update() {
 
 // openHosts 在浏览器中打开 hosts 源网址
 func openHosts(name string) {
+	if name == "LOCAL" {
+		openURL(getLocalHostsPath())
+		return
+	}
+
 	h := getHostsItems()
 	for _, item := range h {
 		if item.Name == name {
@@ -118,10 +123,10 @@ func openHosts(name string) {
 		}
 	}
 
-	if isPathExist(getHostsFilePath()) {
-		err = os.Remove(getHostsFilePath())
+	if isPathExist(getHostsPathWithHosts()) {
+		err = os.Remove(getHostsPathWithHosts())
 	}
-	err = os.Rename(lastBak, getHostsFilePath())
+	err = os.Rename(lastBak, getHostsPathWithHosts())
 	if err != nil {
 		log.Fatal("recover backup file failed")
 	}
