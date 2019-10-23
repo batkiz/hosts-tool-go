@@ -28,7 +28,7 @@ func add(name, url string) {
 // del 删除源
 func del(name string) {
 	h := getHostsItems()
-	for i, _ := range h {
+	for i := range h {
 		if h[i].Name == name {
 			h = append(h[:i], h[i+1:]...)
 		}

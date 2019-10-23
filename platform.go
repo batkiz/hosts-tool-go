@@ -9,11 +9,11 @@ import (
 	"runtime"
 )
 
-// getHostsPathWithoutHosts 返回 hosts 文件路径（不带 hosts）
-func getHostsPathWithoutHosts() string {
+// getHostsDirPath 返回 hosts 文件所在文件夹的路径
+func getHostsDirPath() string {
 	switch runtime.GOOS {
 	case "windows":
-		return `C:\Windows\System32\drivers\etc\`
+		return os.Getenv("SYSTEMROOT") + `\System32\drivers\etc\`
 	case "linux":
 		return `/etc/`
 	default:
@@ -22,9 +22,9 @@ func getHostsPathWithoutHosts() string {
 	}
 }
 
-// getHostsPathWithHosts 返回 hosts 文件路径（带 hosts）
-func getHostsPathWithHosts() string {
-	return getHostsPathWithoutHosts() + "hosts"
+// getHostsFilePath 返回 hosts 文件的路径
+func getHostsFilePath() string {
+	return getHostsDirPath() + "hosts"
 }
 
 // getConfigFilePath 返回配置文件路径

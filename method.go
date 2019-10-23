@@ -41,10 +41,10 @@ func isPathExist(_path string) bool {
 
 // backupHosts 备份 hosts 文件
 func backupHosts() {
-	if isPathExist(hostsPath) {
-		backupedName := getHostsPathWithoutHosts() + time.Now().Format("2006-01-02-15-04-05")
+	if isPathExist(hostsFilePath) {
+		backupedName := getHostsDirPath() + time.Now().Format("2006-01-02-15-04-05")
 
-		err := os.Rename(hostsPath, backupedName+".bak")
+		err := os.Rename(hostsFilePath, backupedName+".bak")
 		if err != nil {
 			panic(err)
 		}
@@ -55,7 +55,7 @@ func backupHosts() {
 func getHostsContent(hosts []hostsItem) string {
 	content := ""
 	for i := range hosts {
-		if hosts[i].Enabled == true {
+		if hosts[i].Enabled {
 			content += getHosts(hosts[i].Url)
 			fmt.Println(hosts[i].Name + " hosts file got")
 		} else {
@@ -68,7 +68,7 @@ func getHostsContent(hosts []hostsItem) string {
 
 // cleanBak 清除备份文件
 func cleanBak() {
-	files, err := filepath.Glob(getHostsPathWithoutHosts() + `*.bak`)
+	files, err := filepath.Glob(getHostsDirPath() + `*.bak`)
 	if err != nil {
 		panic(err)
 	}
@@ -83,7 +83,7 @@ func update() {
 	backupHosts()
 	h := getHostsItems()
 	content := getHostsContent(h)
-	f, _ := os.OpenFile(hostsPath, os.O_CREATE|os.O_WRONLY, 0666)
+	f, _ := os.OpenFile(hostsFilePath, os.O_CREATE|os.O_WRONLY, 0666)
 	defer f.Close()
 	_, _ = f.WriteString(content)
 	fmt.Println(Green("updated successfully"))

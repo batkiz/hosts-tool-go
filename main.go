@@ -11,15 +11,16 @@ import (
 )
 
 var (
-	hostsPath      string = getHostsPathWithHosts()
+	hostsFilePath  string = getHostsFilePath()
 	configFilePath string = getConfigFilePath()
 	Version        string = "0.1.0"
 )
 
 func init() {
-	if runtime.GOOS == "windows" || runtime.GOOS == "linux" {
+	switch runtime.GOOS {
+	case "windows", "linux":
 
-	} else {
+	default:
 		log.Fatal("sorry, this is an unsupported platform.")
 	}
 }
