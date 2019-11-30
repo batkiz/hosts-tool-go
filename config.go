@@ -9,18 +9,21 @@ import (
 	"github.com/cheynewallace/tabby"
 )
 
+func saveConfig(h []hostsItem) {
+	newContent, _ := json.Marshal(h)
+	f, _ := os.OpenFile(configFilePath, os.O_WRONLY|os.O_TRUNC, 0666)
+	defer f.Close()
+	_, _ = f.WriteString(string(newContent))
+}
+
 // add 添加源
 func add(name, url string) {
 	item := hostsItem{Name: name, Url: url, Enabled: true}
 
 	h := getHostsItems()
 	h = append(h, item)
-	newContent, _ := json.Marshal(h)
 
-	f, _ := os.OpenFile(configFilePath, os.O_WRONLY|os.O_TRUNC, 0666)
-	defer f.Close()
-	fmt.Println(string(newContent))
-	_, _ = f.WriteString(string(newContent))
+	saveConfig(h)
 
 	fmt.Println(name + " successfully added")
 }
@@ -34,10 +37,7 @@ func del(name string) {
 		}
 	}
 
-	newContent, _ := json.Marshal(h)
-	f, _ := os.OpenFile(configFilePath, os.O_WRONLY|os.O_TRUNC, 0666)
-	defer f.Close()
-	_, _ = f.WriteString(string(newContent))
+	saveConfig(h)
 
 	fmt.Println(name + " successfully removed")
 }
@@ -51,4 +51,17 @@ func list() {
 		t.AddLine(h[i].Name, h[i].Enabled, h[i].Url)
 	}
 	t.Print()
+}
+
+func toggle(name string, flag bool) {
+	h := getHostsItems()
+	for i := range h {
+		if h[i].Name == name && h[i].Enabled != flag {
+			h[i].Enabled = flag
+			fmt.Println(name + " successfully toggled.")
+			saveConfig(h)
+			return
+		}
+	}
+	fmt.Println(name + " not found.")
 }

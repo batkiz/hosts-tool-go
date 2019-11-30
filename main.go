@@ -13,7 +13,7 @@ import (
 var (
 	hostsFilePath  string = getHostsFilePath()
 	configFilePath string = getConfigFilePath()
-	Version        string = "0.1.0"
+	Version        string = "0.1.1"
 )
 
 func init() {
@@ -21,7 +21,8 @@ func init() {
 	case "windows", "linux":
 
 	default:
-		log.Fatal("sorry, this is an unsupported platform.")
+		fmt.Println(Red("sorry, this is an unsupported platform."))
+		os.Exit(0)
 	}
 }
 
