@@ -8,5 +8,5 @@ require (
 	github.com/eddieivan01/nic v0.1.1
 	github.com/gin-gonic/gin v1.4.0 // indirect
 	github.com/logrusorgru/aurora v0.0.0-20190428105938-cea283e61946
-	github.com/urfave/cli v1.20.0
+	github.com/urfave/cli v1.22.4
 )
